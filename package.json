@@ -1,0 +1,19 @@
+{
+  "name": "prisma-cache-bench",
+  "type": "module",
+  "scripts": {
+    "seed": "node seed.js",
+    "bench": "node src/run.js",
+    "dev": "node src/index.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "autocannon": "^7.15.0",
+    "bentocache": "^1.0.0",
+    "express": "^4.18.0",
+    "prisma-smart-cache": "^0.2.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0"
+  }
+}
