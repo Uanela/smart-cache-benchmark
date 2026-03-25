@@ -38,7 +38,7 @@ async function main() {
   );
 
   // 100k posts in batches
-  const BATCH = 500;
+  const BATCH = 50;
   for (let i = 0; i < 200; i++) {
     await Promise.all(
       Array.from({ length: BATCH }, (_, j) => {

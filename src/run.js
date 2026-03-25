@@ -2,6 +2,8 @@ import autocannon from "autocannon";
 
 const PORT = 8003;
 const BASE = `http://localhost:${PORT}`;
+const RAW = BASE + "/raw";
+const CACHED = BASE + "/cached";
 const CONNECTIONS = 200;
 const DURATION = 60;
 
@@ -15,14 +17,14 @@ const SCENARIOS = [
       url: BASE + "/raw",
       requests: Array.from({ length: 10 }, (_, i) => ({
         method: "GET",
-        path: `/user/${(i % 50) + 1}`,
+        path: `${RAW}/user/${(i % 50) + 1}`,
       })),
     },
     cached: {
       url: BASE + "/cached",
       requests: Array.from({ length: 10 }, (_, i) => ({
         method: "GET",
-        path: `/user/${(i % 50) + 1}`,
+        path: `${CACHED}/user/${(i % 50) + 1}`,
       })),
     },
   },
@@ -33,14 +35,14 @@ const SCENARIOS = [
       url: BASE + "/raw",
       requests: Array.from({ length: 20 }, (_, i) => ({
         method: "GET",
-        path: `/posts?userId=${(i % 50) + 1}`,
+        path: `${RAW}/posts?userId=${(i % 50) + 1}`,
       })),
     },
     cached: {
       url: BASE + "/cached",
       requests: Array.from({ length: 20 }, (_, i) => ({
         method: "GET",
-        path: `/posts?userId=${(i % 50) + 1}`,
+        path: `${CACHED}/posts?userId=${(i % 50) + 1}`,
       })),
     },
   },
@@ -49,11 +51,11 @@ const SCENARIOS = [
     description: "JOIN query — expensive, great cache candidate",
     raw: {
       url: BASE + "/raw",
-      requests: [{ method: "GET", path: "/feed" }],
+      requests: [{ method: "GET", path: `${RAW}/feed` }],
     },
     cached: {
       url: BASE + "/cached",
-      requests: [{ method: "GET", path: "/feed" }],
+      requests: [{ method: "GET", path: `${CACHED}/feed` }],
     },
   },
   {
@@ -61,11 +63,11 @@ const SCENARIOS = [
     description: "Multiple aggregates — very expensive without cache",
     raw: {
       url: BASE + "/raw",
-      requests: [{ method: "GET", path: "/stats" }],
+      requests: [{ method: "GET", path: `${RAW}/stats` }],
     },
     cached: {
       url: BASE + "/cached",
-      requests: [{ method: "GET", path: "/stats" }],
+      requests: [{ method: "GET", path: `${CACHED}/stats` }],
     },
   },
   {
@@ -76,17 +78,17 @@ const SCENARIOS = [
       requests: [
         ...Array.from({ length: 8 }, (_, i) => ({
           method: "GET",
-          path: `/posts?userId=${(i % 50) + 1}`,
+          path: `${RAW}/posts?userId=${(i % 50) + 1}`,
         })),
         {
           method: "PUT",
-          path: "/users/1",
+          path: `${RAW}/users/1`,
           body: JSON.stringify({ bio: `updated ${Date.now()}` }),
           headers: { "content-type": "application/json" },
         },
         {
           method: "PUT",
-          path: "/users/2",
+          path: `${RAW}/users/2`,
           body: JSON.stringify({ bio: `updated ${Date.now()}` }),
           headers: { "content-type": "application/json" },
         },
@@ -97,17 +99,17 @@ const SCENARIOS = [
       requests: [
         ...Array.from({ length: 8 }, (_, i) => ({
           method: "GET",
-          path: `/posts?userId=${(i % 50) + 1}`,
+          path: `${CACHED}/posts?userId=${(i % 50) + 1}`,
         })),
         {
           method: "PUT",
-          path: "/users/1",
+          path: `${CACHED}/users/1`,
           body: JSON.stringify({ bio: `updated ${Date.now()}` }),
           headers: { "content-type": "application/json" },
         },
         {
           method: "PUT",
-          path: "/users/2",
+          path: `${CACHED}/users/2`,
           body: JSON.stringify({ bio: `updated ${Date.now()}` }),
           headers: { "content-type": "application/json" },
         },
