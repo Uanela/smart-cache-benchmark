@@ -7,8 +7,6 @@ const CACHED = BASE + "/cached";
 const CONNECTIONS = 200;
 const DURATION = 60;
 
-// ─── Scenarios ─────────────────────────────────────────────────────────────
-
 const SCENARIOS = [
   {
     name: "Point lookup (user by ID)",
@@ -118,7 +116,6 @@ const SCENARIOS = [
   },
 ];
 
-// ─── Runner ────────────────────────────────────────────────────────────────
 
 function run(label, config) {
   return new Promise((resolve) => {
@@ -136,7 +133,7 @@ function run(label, config) {
         resolve(result);
       }
     );
-    // silence progress bar
+
     instance.on("done", () => {});
   });
 }
@@ -190,8 +187,6 @@ function printTable(results) {
   console.log("\n  Gain = p99 latency change (negative = cache is faster)\n");
 }
 
-// ─── Main ──────────────────────────────────────────────────────────────────
-
 async function main() {
   console.log(
     `\nBenchmark suite — ${CONNECTIONS} connections, ${DURATION}s per test`
@@ -212,7 +207,7 @@ async function main() {
 
   printTable(results);
 
-  // Raw dump for anything that errored
+
   for (const { scenario, raw, cached } of results) {
     if (cached?.errors > 0) {
       console.log(
